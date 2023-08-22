@@ -1,5 +1,6 @@
 import express from "express";
 import { insertUser } from "../models/user/UserModel.js";
+import { hashPassword } from "../utils/bcrypt.js";
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -19,17 +20,18 @@ router.get("/", (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
+    const { password } = req.body;
+    req.body.password = hashPassword(password);
+
     const user = await insertUser(req.body);
     user?._id
       ? res.json({
           status: "success",
           message: "New user has been created successfully",
-          user,
         })
       : res.json({
           status: "error",
           message: "Unable to create user, try again later",
-          user,
         });
   } catch (error) {
     let msg = error.message;
