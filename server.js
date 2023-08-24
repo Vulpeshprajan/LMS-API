@@ -3,6 +3,7 @@ dotenv.config();
 
 import express from "express";
 import morgan from "morgan";
+import cors from "cors";
 
 const app = express();
 
@@ -15,6 +16,7 @@ connectMongoDB();
 // middlewares
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cors());
 
 // apis
 import userRouter from "./src/routers/userRouter.js";
