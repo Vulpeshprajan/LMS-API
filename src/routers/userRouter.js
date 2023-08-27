@@ -49,7 +49,6 @@ router.post("/", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     // get the data
-    console.log(req.body);
 
     const { email, password } = req.body;
     // check if the user exit with received email and get user from db
