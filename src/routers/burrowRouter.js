@@ -1,13 +1,41 @@
 import express from "express";
+import {
+  addBurrow,
+  getBurrowbyUserId,
+  getBurrows,
+} from "../models/burrow/burrowModel.js";
+import { updateBooks } from "../models/books/bookModel.js";
 const router = express.Router();
 
-router.post("/", (req, res) => {
+const twoWeeks = 14;
+router.post("/", async (req, res) => {
   try {
-    console.log(req.body);
+    const dueDate = new Date();
+    console.log(dueDate);
+    dueDate.setDate(dueDate.getDate() + twoWeeks);
+    req.body.dueDate = dueDate;
 
+    // create new burrow details in db
+    const result = await addBurrow(req.body);
+
+    if (result?._id) {
+      // make book not availe and give the dueDate
+      const update = await updateBooks(req.body.bookId, {
+        isAvailable: false,
+        dueDate,
+        returnDate: null,
+      });
+
+      if (update?._id) {
+        return res.json({
+          status: "success",
+          message: "You book has been burrowed and updated in the system",
+        });
+      }
+    }
     res.json({
-      status: "success",
-      message: "Your book has been burrowed and updated in the system",
+      status: "error",
+      message: "unable to burrow the book now, Please try gain later",
     });
   } catch (error) {
     res.json({
@@ -17,4 +45,23 @@ router.post("/", (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const { role, _id } = req.userInfo;
+
+    const burrowHistory =
+      role === "admin" ? await getBurrows() : await getBurrowbyUserId(_id);
+
+    res.json({
+      status: "success",
+      message: "burrow history",
+      burrowHistory,
+    });
+  } catch (error) {
+    res.json({
+      status: "error",
+      message: error.message,
+    });
+  }
+});
 export default router;
