@@ -6,12 +6,10 @@ import {
   updateBooks,
 } from "../models/books/bookModel.js";
 import { adminAuth, auth } from "../middleware/authMiddleware.js";
-
 const router = express.Router();
 
 router.post("/", auth, adminAuth, async (req, res) => {
   try {
-    console.log(req.body);
     const result = await addBook(req.body);
 
     result?._id
@@ -36,7 +34,7 @@ router.get("/", async (req, res) => {
     const books = await getBooks();
     res.json({
       status: "success",
-      message: "Books lists",
+      message: "book list",
       books,
     });
   } catch (error) {
@@ -50,12 +48,13 @@ router.get("/", async (req, res) => {
 router.put("/", auth, adminAuth, async (req, res) => {
   try {
     const { __v, _id, ...rest } = req.body;
+
     const result = await updateBooks(_id, rest);
 
     result?._id
       ? res.json({
           status: "success",
-          message: "Book has been updated successfully",
+          message: " book has been updated successfully",
         })
       : res.json({
           status: "error",
@@ -81,7 +80,7 @@ router.delete("/:_id", auth, adminAuth, async (req, res) => {
         })
       : res.json({
           status: "error",
-          message: "Unable to delete the book",
+          message: "Unable to deleted the book ",
         });
   } catch (error) {
     res.json({

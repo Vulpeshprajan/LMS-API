@@ -4,7 +4,7 @@ export const insertUser = (userObj) => {
   return UserSchema(userObj).save();
 };
 
-export const getUserByEmail = (email) => {
+export const getUserByEamil = (email) => {
   return UserSchema.findOne({ email });
 };
 export const getUserById = (_id) => {

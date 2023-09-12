@@ -13,7 +13,7 @@ export const getBurrowbyUserId = (userId) => {
   return BurrowSchema.find({ userId });
 };
 
-export const updateBurrows = (_id, data) => {
+export const updateBurrow = (_id, data) => {
   return BurrowSchema.findByIdAndUpdate(_id, data);
 };
 

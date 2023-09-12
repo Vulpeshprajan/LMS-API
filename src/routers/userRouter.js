@@ -1,14 +1,13 @@
 import express from "express";
-import { getUserByEmail, insertUser } from "../models/user/UserModel.js";
+import { getUserByEamil, insertUser } from "../models/user/UserModel.js";
 import { comparePassword, hashPassword } from "../utils/bcrypt.js";
 const router = express.Router();
 
 router.get("/", (req, res) => {
   try {
-    console.log(req.body);
     res.json({
       status: "success",
-      message: "Connected to user information",
+      message: "Here are the user informations",
     });
   } catch (error) {
     res.json({
@@ -21,23 +20,24 @@ router.get("/", (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { password } = req.body;
+
     req.body.password = hashPassword(password);
 
     const user = await insertUser(req.body);
     user?._id
       ? res.json({
           status: "success",
-          message: "New user has been created successfully",
+          message: "New user has been created successfull",
         })
       : res.json({
           status: "error",
-          message: "Unable to create user, try again later",
+          message: "Unable to craete user, try again later",
         });
   } catch (error) {
     let msg = error.message;
 
-    if (msg.includes("E11000 duplicate key error collection")) {
-      msg = "There is another user who uses the email in the system";
+    if (msg.includes("E11000 duplicate key error")) {
+      msg = "Ther is another user who uses this email in the system";
     }
     res.json({
       status: "error",
@@ -48,22 +48,22 @@ router.post("/", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    // get the data
+    //get the data
 
     const { email, password } = req.body;
-    // check if the user exit with received email and get user from db
+    //check if user exit with received email and get user from db
 
-    const user = await getUserByEmail(email);
+    const user = await getUserByEamil(email);
+
     if (user?._id) {
-      // use bcrypt to check if password is matching
+      // use bcrypt to check if the passowrd is matching
 
       const isMatch = comparePassword(password, user.password);
-
       if (isMatch) {
         user.password = undefined;
         return res.json({
           status: "success",
-          message: "Login success",
+          message: "Logedin successfully",
           user,
         });
       }
