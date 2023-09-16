@@ -17,6 +17,9 @@ const burrowSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     required: true,
   },
+  reviewGiven: {
+    type: mongoose.Types.ObjectId,
+  },
   userName: {
     type: String,
     required: true,

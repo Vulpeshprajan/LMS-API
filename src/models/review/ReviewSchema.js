@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 
-
-const reviewSchema = new mongoose.Schema({
-
+const reviewSchema = new mongoose.Schema(
+  {
     burrowHistoryId: {
-        type: mongoose.Types.ObjectId,
-        required: true,
-
+      type: mongoose.Types.ObjectId,
+      required: true,
     },
     bookId: {
       type: mongoose.Types.ObjectId,
@@ -16,7 +14,7 @@ const reviewSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-  
+
     userId: {
       type: mongoose.Types.ObjectId,
       required: true,
@@ -29,22 +27,22 @@ const reviewSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    title: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       required: true,
     },
-    start: {
+    star: {
       type: Number,
       required: true,
     },
   },
   {
     timestamps: true,
-
   }
-  
-  
-  );
-  
-  export default mongoose.model("Review", reviewSchema); //burrows
-  
+);
+
+export default mongoose.model("Review", reviewSchema); //reviews

@@ -8,6 +8,8 @@
 
 @bookApi = {{rootApi}}/api/v1/book
 
+@reviewApi = {{rootApi}}/api/v1/review
+
 
 ### Server Testing 
 GET {{rootApi}}
@@ -64,3 +66,7 @@ Content-Type: application/json
     "userName": "how to code",
     "returnDate": "2023-12-12"
 }
+
+# ============ review api 
+### get reviews
+GET {{reviewApi}}
